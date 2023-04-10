@@ -1,6 +1,7 @@
 numpy
 pandas
 streamlit
+scikit-learn
 io
 PIL
 colorsys
