@@ -2,11 +2,11 @@ import os
 import sys
 import pandas as pd
 import numpy as np 
-import requests
 
-from io import BytesIO
+
+
 from glob import glob
-from PIL import Image, ImageEnhance
+from PIL import Image
 
 import matplotlib.pyplot as plt
 from PIL import ImageColor
@@ -16,7 +16,7 @@ import plotly.express as px
 
 from sklearn.cluster import KMeans, BisectingKMeans, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
-from sklearn.manifold import TSNE
+
 
 import streamlit as st
 
@@ -164,45 +164,45 @@ gallery_dict = {image_path.split("/")[-1].split(".")[-2].replace("-", " "): imag
     for image_path in gallery_files}
 
 
-toggle = st.sidebar.checkbox("Toggle Update", value=True, help="Continuously update the pallete with every change in the app.")
-click = st.sidebar.button("Find Palette", disabled=bool(toggle))
+toggle = True#st.sidebar.checkbox("Toggle Update", value=True, help="Continuously update the pallete with every change in the app.")
+click = False#st.sidebar.button("Find Palette", disabled=bool(toggle))
 
 st.sidebar.markdown("---")
 st.sidebar.header("Settings")
 palette_size = int(st.sidebar.number_input("palette size", min_value=1, max_value=20, value=5, step=1, help="Number of colors to infer from the image."))
-sample_size = int(st.sidebar.number_input("sample size", min_value=5, max_value=3000, value=500, step=500, help="Number of sample pixels to pick from the image."))
+sample_size = 1000#int(st.sidebar.number_input("sample size", min_value=5, max_value=3000, value=500, step=500, help="Number of sample pixels to pick from the image."))
 
 # Image Enhancement
 enhancement_categories = enhancement_range.keys()
-enh_expander = st.sidebar.expander("Image Enhancements", expanded=False)
-with enh_expander:
+#enh_expander = st.sidebar.expander("Image Enhancements", expanded=False)
+#with enh_expander:
     
-    if st.button("reset"):
-        for cat in enhancement_categories:
-            if f"{cat}_enhancement" in st.session_state:
-                st.session_state[f"{cat}_enhancement"] = 1.0
-enhancement_factor_dict = {
-    cat: enh_expander.slider(f"{cat} Enhancement", 
-                            value=1., 
-                            min_value=enhancement_range[cat][0], 
-                            max_value=enhancement_range[cat][1], 
-                            step=enhancement_range[cat][2],
-                            key=f"{cat}_enhancement")
-    for cat in enhancement_categories
-}
-enh_expander.info("**Try the following**\n\nColor Enhancements = 2.6\n\nContrast Enhancements = 1.1\n\nBrightness Enhancements = 1.1")
+#    if st.button("reset"):
+#        for cat in enhancement_categories:
+#            if f"{cat}_enhancement" in st.session_state:
+#                st.session_state[f"{cat}_enhancement"] = 1.0
+#enhancement_factor_dict = {
+#    cat: enh_expander.slider(f"{cat} Enhancement", 
+#                            value=1., 
+#                            min_value=enhancement_range[cat][0], 
+#                            max_value=enhancement_range[cat][1], 
+#                            step=enhancement_range[cat][2],
+#                            key=f"{cat}_enhancement")
+#    for cat in enhancement_categories
+#}
+#enh_expander.info("**Try the following**\n\nColor Enhancements = 2.6\n\nContrast Enhancements = 1.1\n\nBrightness Enhancements = 1.1")
 
 # Clustering Model 
-model_name = st.sidebar.selectbox("machine learning model", model_dict.keys(), help="Machine Learning model to use for clustering pixels and colors together.")
+model_name = 'KMeans' #st.sidebar.selectbox("machine learning model", model_dict.keys(), help="Machine Learning model to use for clustering pixels and colors together.")
 sklearn_info = st.sidebar.empty()
 
 sort_options = sorted(list(sort_func_dict.keys()) + [key + "_r" for key in sort_func_dict.keys() if key!="random"])
-sort_func = st.sidebar.selectbox("palette sort function", options=sort_options, index=5)
+sort_func = 'sqr_rgb'#st.sidebar.selectbox("palette sort function", options=sort_options, index=5)
 
 # Random Number Seed
-seed = int(st.sidebar.number_input("random seed", value=42, help="Seed used for all random samplings."))
+seed = 42#int(st.sidebar.number_input("random seed", value=42, help="Seed used for all random samplings."))
 np.random.seed(seed)
-st.sidebar.markdown("---")
+#st.sidebar.markdown("---")
 
 
 # =======
@@ -243,9 +243,9 @@ if n_dims == 4:
     img = background
 
 # apply image enhancements
-for cat in enhancement_categories:
-    img = getattr(ImageEnhance, cat)(img)
-    img = img.enhance(enhancement_factor_dict[cat])
+#for cat in enhancement_categories:
+#    img = getattr(ImageEnhance, cat)(img)
+#    img = img.enhance(enhancement_factor_dict[cat])
 
 # show the image
 with st.expander("", expanded=True):
