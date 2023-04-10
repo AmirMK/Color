@@ -1,0 +1,10 @@
+numpy
+pandas
+streamlit
+scikit-learn
+io
+PIL
+colorsys
+plotly
+glob
+requests
