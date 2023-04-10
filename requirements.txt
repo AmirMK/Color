@@ -1,7 +1,7 @@
 numpy
 pandas
-streamlit
-scikit-learn
+streamlit==1.21.0
+scikit-learn==1.2.2
 io
 PIL
 colorsys
