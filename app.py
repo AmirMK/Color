@@ -213,7 +213,7 @@ st.sidebar.markdown("---")
 gallery_tab, upload_tab  = st.tabs(["Gallery", "Upload"])
 with gallery_tab:
     options = list(gallery_dict.keys())
-    file_name = st.selectbox("Select Art", 
+    file_name = st.selectbox("Select a Logo", 
                             options=options, index=0)
     file = gallery_dict[file_name]
 
@@ -225,7 +225,7 @@ with gallery_tab:
     img = Image.open(file)
 
 with upload_tab:
-    file = st.file_uploader("Upload Art", key="file_uploader")
+    file = st.file_uploader("Upload your own image", key="file_uploader")
     if file is not None:
         try:
             img = Image.open(file)
